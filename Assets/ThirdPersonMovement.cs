@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ThirdPersonMovement : MonoBehaviour
 {
+
+   public Rigidbody rb;
    public CharacterController controller;
 
    public Transform cam;
