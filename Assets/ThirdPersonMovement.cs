@@ -21,7 +21,7 @@ public class ThirdPersonMovement : MonoBehaviour
     public float gravity = -9.81f;
     [SerializeField]
     public float jump = 1f;
-    Vector3 velocity;
+    Vector3 Yvelocity;
 
     [Header("Ground Check")]
     [SerializeField]
@@ -46,9 +46,9 @@ public class ThirdPersonMovement : MonoBehaviour
     void Update()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position,groundDistance, groundMask);
-        if (isGrounded && velocity.y <0 )
+        if (isGrounded && Yvelocity.y <0 )
         {
-            velocity.y = gravity;
+            Yvelocity.y = gravity;
         }
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
@@ -67,11 +67,11 @@ public class ThirdPersonMovement : MonoBehaviour
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             isGrounded = false;
-            velocity.y = Mathf.Sqrt(jump * -2f * gravity);
+            Yvelocity.y = Mathf.Sqrt(jump * -2f * gravity);
             Invoke(nameof(ResetJump), jumpCooldown);
         }
-        velocity.y += gravity * Time.deltaTime;
-        controller.Move(velocity* Time.deltaTime);
+        Yvelocity.y += gravity * Time.deltaTime;
+        controller.Move(Yvelocity * Time.deltaTime);
     }
     private void ResetJump()
     {
