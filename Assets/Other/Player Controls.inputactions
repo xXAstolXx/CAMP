@@ -17,7 +17,7 @@
             ],
             "bindings": [
                 {
-                    "name": "KB_X",
+                    "name": "KB",
                     "id": "99e5f9ce-7853-47f5-b01d-aa28c28b9d6d",
                     "path": "1DAxis",
                     "interactions": "",

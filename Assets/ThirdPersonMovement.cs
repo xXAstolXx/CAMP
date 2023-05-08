@@ -9,12 +9,13 @@ public class ThirdPersonMovement : MonoBehaviour
    public CharacterController controller;
 
    public Transform cam;
-
-   public float speed = 6f;
-
-   public float turnSmoothTime = 0.1f;
-
-   float turnSmoothVelocity;
+    [Header("=== Player Movement Settings ===")]
+    [SerializeField]
+    public float speed = 6f;
+    [SerializeField]
+    public float turnSmoothTime = 0.1f;
+    [SerializeField]
+    float turnSmoothVelocity;
 
     // Update is called once per frame
     void Update()
