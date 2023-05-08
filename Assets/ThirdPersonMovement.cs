@@ -17,11 +17,39 @@ public class ThirdPersonMovement : MonoBehaviour
     public float turnSmoothTime = 0.1f;
     [SerializeField]
     float turnSmoothVelocity;
+    [SerializeField]
+    public float gravity = -9.81f;
+    [SerializeField]
+    public float jump = 1f;
+    Vector3 velocity;
 
+    [Header("Ground Check")]
+    [SerializeField]
+    public Transform groundCheck;
+    [SerializeField]
+    public float groundDistance = 0.4f;
+    [SerializeField]
+    public LayerMask groundMask;
+    [SerializeField]
+    bool isGrounded;
+    [SerializeField]
+    public float jumpCooldown;
+
+
+
+    private void Start()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
     // Update is called once per frame
     void Update()
     {
-
+        isGrounded = Physics.CheckSphere(groundCheck.position,groundDistance, groundMask);
+        if (isGrounded && velocity.y <0 )
+        {
+            velocity.y = gravity;
+        }
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
 
@@ -36,5 +64,17 @@ public class ThirdPersonMovement : MonoBehaviour
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             controller.Move (moveDir.normalized * speed * Time.deltaTime);
         }
+        if (Input.GetButtonDown("Jump") && isGrounded)
+        {
+            isGrounded = false;
+            velocity.y = Mathf.Sqrt(jump * -2f * gravity);
+            Invoke(nameof(ResetJump), jumpCooldown);
+        }
+        velocity.y += gravity * Time.deltaTime;
+        controller.Move(velocity* Time.deltaTime);
+    }
+    private void ResetJump()
+    {
+        isGrounded = false;
     }
 }
