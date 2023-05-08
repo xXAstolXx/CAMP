@@ -729,7 +729,7 @@ MonoBehaviour:
   turnSmoothVelocity: 0
   gravity: -9.81
   jump: 10
-  groundCheck: {fileID: 164234624}
+  groundCheck: {fileID: 1974261304}
   groundDistance: 0.1
   groundMask:
     serializedVersion: 2
@@ -2496,7 +2496,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2147084267}
-  m_LocalRotation: {x: 0.16036716, y: -0.000000018988336, z: 0.0000000030850345, w: 0.98705745}
+  m_LocalRotation: {x: 0.16036716, y: 0.000000018988336, z: -0.0000000030850345, w: 0.98705745}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
