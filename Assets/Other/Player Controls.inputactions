@@ -6,10 +6,19 @@
             "id": "b6e7712f-9f82-4da4-88de-fc3c0deba397",
             "actions": [
                 {
-                    "name": "Horizontal",
+                    "name": "Vertical",
                     "type": "Value",
                     "id": "474d69a0-108e-4a52-87a3-688045a7c3d8",
                     "expectedControlType": "Key",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Horizontal",
+                    "type": "Value",
+                    "id": "e6baf05d-0cb6-4b13-a506-c9940de06cf7",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -18,7 +27,7 @@
             "bindings": [
                 {
                     "name": "KB",
-                    "id": "99e5f9ce-7853-47f5-b01d-aa28c28b9d6d",
+                    "id": "139b606e-c101-4bfc-9422-f1760ac5238f",
                     "path": "1DAxis",
                     "interactions": "",
                     "processors": "",
@@ -29,7 +38,7 @@
                 },
                 {
                     "name": "negative",
-                    "id": "58df7be2-4207-426b-8103-d2fa16699120",
+                    "id": "2ac8a95a-e42c-45df-8b9a-c129439f542d",
                     "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
@@ -40,12 +49,45 @@
                 },
                 {
                     "name": "positive",
-                    "id": "33e977eb-ad98-49de-b909-bf18b2ae48ab",
+                    "id": "7ac471d7-f8be-42a6-babf-c3bcf66fc12f",
                     "path": "<Keyboard>/d",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Horizontal",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "KB",
+                    "id": "76afc4e4-e93d-482d-889f-94db9bd575e6",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Vertical",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "762d7461-381a-42a2-8750-49c8ef60792d",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Vertical",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "5af8c5ad-1125-47a1-b297-c995dab65de4",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Vertical",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }

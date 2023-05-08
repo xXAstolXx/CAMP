@@ -772,12 +772,12 @@ MonoBehaviour:
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 624996223}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
+        m_TargetAssemblyTypeName: ThirdPersonMovement, Assembly-CSharp
+        m_MethodName: OnAD
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -785,6 +785,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 474d69a0-108e-4a52-87a3-688045a7c3d8
     m_ActionName: Player/Horizontal[/Keyboard/a,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 624996223}
+        m_TargetAssemblyTypeName: ThirdPersonMovement, Assembly-CSharp
+        m_MethodName: OnAD
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: e6baf05d-0cb6-4b13-a506-c9940de06cf7
+    m_ActionName: Player/Vertical[/Keyboard/a,/Keyboard/d]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -2016,7 +2032,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2147084267}
-  m_LocalRotation: {x: 0.16036716, y: 0.000000018988336, z: -0.0000000030850345, w: 0.98705745}
+  m_LocalRotation: {x: 0.16036716, y: -0.000000018988336, z: 0.0000000030850345, w: 0.98705745}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
