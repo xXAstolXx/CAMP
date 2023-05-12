@@ -36,13 +36,19 @@ public class ThirdPersonMovement : MonoBehaviour
     public float jumpCooldown;
 
 
+    enum PlayerState
+    {
+        IDLE = 0,
+        WALK,
+        DASH,
+    }
+
 
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
-    // Update is called once per frame
     void Update()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position,groundDistance, groundMask);
