@@ -10,9 +10,15 @@ public class ThirdPersonMovement : MonoBehaviour
    public CharacterController controller;
 
    public Transform cam;
+
     [Header("=== Player utilities ===")]
-    public int health = 100;
+    public HealthBar healthBar;
+    public int maxHealth = 100;
+    public int currentHealth;
     public int maxDashes = 2;
+
+
+
     [Header("=== Player Movement Settings ===")]
     [SerializeField]
     public float speed = 6f;
@@ -52,10 +58,25 @@ public class ThirdPersonMovement : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        currentHealth = maxHealth;
+        healthBar.SetMaxHealth(maxHealth);
     }
 
     void Update()
     {
+        //Testing Healthbar
+        if (Input.GetKeyDown(KeyCode.L)) 
+        {
+            TakeDamage(20);
+        }
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            HealDamage(20);
+        }
+        
+
+
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
 
@@ -89,5 +110,18 @@ public class ThirdPersonMovement : MonoBehaviour
     private void ResetJump()
     {
         isGrounded = false;
+    }
+
+    //Testing Damage to Player
+    void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+        healthBar.SetHealth(currentHealth);
+    }
+
+    void HealDamage(int heal)
+    {
+        currentHealth += heal;
+        healthBar.SetHealth(currentHealth);
     }
 }
