@@ -41,6 +41,7 @@ public class ThirdPersonMovement : MonoBehaviour
         IDLE = 0,
         WALK,
         DASH,
+        ATTACK = 10
     }
 
 
@@ -49,13 +50,9 @@ public class ThirdPersonMovement : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
+
     void Update()
     {
-        isGrounded = Physics.CheckSphere(groundCheck.position,groundDistance, groundMask);
-        if (isGrounded && JumpVector.y <0 )
-        {
-            JumpVector.y = gravity;
-        }
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
 
@@ -76,8 +73,15 @@ public class ThirdPersonMovement : MonoBehaviour
             JumpVector.y = Mathf.Sqrt(jump * -2f * gravity);
             Invoke(nameof(ResetJump), jumpCooldown);
         }
+
+        isGrounded = Physics.CheckSphere(groundCheck.position,groundDistance, groundMask);
+        if (isGrounded && JumpVector.y <0 )
+        {
+            JumpVector.y = gravity;
+        }
         JumpVector.y += gravity * Time.deltaTime;
         controller.Move(JumpVector * Time.deltaTime);
+
     }
     private void ResetJump()
     {
