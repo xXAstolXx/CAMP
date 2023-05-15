@@ -71,6 +71,7 @@ public class ThirdPersonMovement : MonoBehaviour
         healthBar.SetMaxHealth(maxHealth);
     }
 
+    
     void Update()
     {
         PlayerMovement();
