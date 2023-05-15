@@ -2,22 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 public class ThirdPersonMovement : MonoBehaviour
 {
 
-   public Rigidbody rb;
-   public CharacterController controller;
+    public Rigidbody rb;
+    public CharacterController controller;
 
-   public Transform cam;
+    public Transform cam;
 
     [Header("=== Player utilities ===")]
     public HealthBar healthBar;
     public int maxHealth = 100;
     public int currentHealth;
     public int maxDashes = 2;
-
-
 
     [Header("=== Player Movement Settings ===")]
     [SerializeField]
@@ -65,6 +64,8 @@ public class ThirdPersonMovement : MonoBehaviour
 
     void Update()
     {
+        PlayerMovement();
+        #region HealthBar
         //Testing Healthbar
         if (Input.GetKeyDown(KeyCode.L)) 
         {
@@ -76,21 +77,31 @@ public class ThirdPersonMovement : MonoBehaviour
             HealDamage(20);
         }
         //Testing Ends
+        #endregion
+    }
 
 
+    void PlayerMovement()
+    {
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
+        Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
 
-        Vector3 direction = new Vector3 (horizontal, 0f, vertical).normalized;
 
-        if (direction.magnitude >= 0.1f) 
-        { 
-            float targetAngle = Mathf.Atan2(direction.x , direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+
+
+        JumpVector.y += gravity * Time.deltaTime;
+        controller.Move(JumpVector * Time.deltaTime);
+
+        if (direction.magnitude >= 0.1f)
+        {
+            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            controller.Move (moveDir.normalized * speed * Time.deltaTime);
+            controller.Move(moveDir.normalized * speed * Time.deltaTime);
         }
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
@@ -99,20 +110,16 @@ public class ThirdPersonMovement : MonoBehaviour
             Invoke(nameof(ResetJump), jumpCooldown);
         }
 
-        isGrounded = Physics.CheckSphere(groundCheck.position,groundDistance, groundMask);
-        if (isGrounded && JumpVector.y <0 )
+        if (isGrounded && JumpVector.y < 0)
         {
             JumpVector.y = gravity;
         }
-        JumpVector.y += gravity * Time.deltaTime;
-        controller.Move(JumpVector * Time.deltaTime);
-
     }
     private void ResetJump()
     {
         isGrounded = false;
     }
-
+    #region Testing
     //Testing Damage to Player
     void TakeDamage(int damage)
     {
@@ -126,4 +133,5 @@ public class ThirdPersonMovement : MonoBehaviour
         healthBar.SetHealth(currentHealth);
     }
     //Testing Ends
+    #endregion
 }
