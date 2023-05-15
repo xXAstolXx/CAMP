@@ -12,11 +12,20 @@ public class ThirdPersonMovement : MonoBehaviour
 
     public Transform cam;
 
+    [Header("=== Keybinds ===")]
+    public KeyCode AtkKey = KeyCode.Q;
+
     [Header("=== Player utilities ===")]
     public HealthBar healthBar;
     public int maxHealth = 100;
-    public int currentHealth;
+    private int currentHealth;
     public int maxDashes = 2;
+
+    [SerializeField]
+    private int AtkDamage = 25;
+    [SerializeField]
+    private float AtkSpeed = 1.5f;
+
 
     [Header("=== Player Movement Settings ===")]
     [SerializeField]
@@ -65,6 +74,7 @@ public class ThirdPersonMovement : MonoBehaviour
     void Update()
     {
         PlayerMovement();
+        Attack();
         #region HealthBar
         //Testing Healthbar
         if (Input.GetKeyDown(KeyCode.L)) 
@@ -119,6 +129,16 @@ public class ThirdPersonMovement : MonoBehaviour
     {
         isGrounded = false;
     }
+
+    void Attack()
+    {
+       if(Input.GetKeyDown(AtkKey))
+       {
+            Debug.Log("AtkKey was Pressed");
+
+       }
+    }
+
     #region Testing
     //Testing Damage to Player
     void TakeDamage(int damage)
