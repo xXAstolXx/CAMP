@@ -10,6 +10,9 @@ public class ThirdPersonMovement : MonoBehaviour
    public CharacterController controller;
 
    public Transform cam;
+    [Header("=== Player utilities ===")]
+    public int health = 100;
+    public int maxDashes = 2;
     [Header("=== Player Movement Settings ===")]
     [SerializeField]
     public float speed = 6f;
