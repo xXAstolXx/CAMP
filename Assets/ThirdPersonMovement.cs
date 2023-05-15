@@ -50,6 +50,7 @@ public class ThirdPersonMovement : MonoBehaviour
         IDLE = 0,
         WALK,
         DASH,
+        JUMP,
         ATTACK = 10
     }
 
@@ -74,7 +75,7 @@ public class ThirdPersonMovement : MonoBehaviour
         {
             HealDamage(20);
         }
-        
+        //Testing Ends
 
 
         float horizontal = Input.GetAxisRaw("Horizontal");
@@ -124,4 +125,5 @@ public class ThirdPersonMovement : MonoBehaviour
         currentHealth += heal;
         healthBar.SetHealth(currentHealth);
     }
+    //Testing Ends
 }
