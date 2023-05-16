@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 public class ThirdPersonMovement : MonoBehaviour
 {
@@ -74,6 +73,7 @@ public class ThirdPersonMovement : MonoBehaviour
     
     void Update()
     {
+        
         PlayerMovement();
         Attack();
         #region HealthBar
