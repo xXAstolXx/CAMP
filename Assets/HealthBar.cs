@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,7 +14,7 @@ public class HealthBar : MonoBehaviour
       healthbarSlider.value = health;
 
 
-        fill.color = healthGradient.Evaluate(1f);
+      fill.color = healthGradient.Evaluate(1f);
     }
     public void SetHealth(int health)
     { 

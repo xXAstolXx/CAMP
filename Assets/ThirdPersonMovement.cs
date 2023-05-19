@@ -22,6 +22,21 @@ public class ThirdPersonMovement : MonoBehaviour
     [SerializeField]
     private int maxHealth = 100;
     private int currentHealth;
+    [SerializeField]
+    private StaminaBar stBar;
+    [SerializeField]
+    private int maxStamina = 100;
+    private int currentStamina;
+    [SerializeField]
+    private int StaminaRefill;
+
+    //Dash Ability
+    [SerializeField]
+    private float dashCooldown;
+    [SerializeField]
+    private int DashCost = 25;
+
+
 
     [SerializeField]
     private int AtkDamage = 25;
@@ -44,8 +59,6 @@ public class ThirdPersonMovement : MonoBehaviour
     [SerializeField]
     private float jumpCooldown;
     [SerializeField]
-    private float dashCooldown;
-    [SerializeField]
     private float dashSpeed;
 
     
@@ -61,20 +74,24 @@ public class ThirdPersonMovement : MonoBehaviour
     bool isGrounded;
     private bool canDash = true;
 
+
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
+        currentStamina = maxStamina;
+        stBar.SetMaxStamina(maxStamina);
     }
 
     
     void Update()
     {
-        
+
         PlayerMovement();
         Attack();
+
         #region HealthBar
         //Testing Healthbar
         if (Input.GetKeyDown(KeyCode.L)) 
@@ -120,13 +137,16 @@ public class ThirdPersonMovement : MonoBehaviour
             Invoke(nameof(ResetJump), jumpCooldown);
         }
 
-        if(Input.GetKeyDown(KeyCode.LeftControl) && canDash)
+        if(Input.GetKeyDown(KeyCode.Mouse1) && canDash && currentStamina != 0)
         {
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
 
-            Debug.Log("Dash was Pressed");
+             currentStamina -= DashCost;
+
+            Debug.Log("Current Stamina: " + currentStamina);
             controller.Move(moveDir * dashSpeed * Time.deltaTime);
+            stBar.SetStamina(currentStamina);
             Invoke(nameof(ResetDash), dashCooldown);
             canDash = false;
 
@@ -145,6 +165,7 @@ public class ThirdPersonMovement : MonoBehaviour
     private void ResetDash()
     {
         canDash = true;
+        StartCoroutine(RefillStaminaBar());
     }
 
     void Attack()
@@ -169,6 +190,18 @@ public class ThirdPersonMovement : MonoBehaviour
         currentHealth += heal;
         healthBar.SetHealth(currentHealth);
     }
+
+   IEnumerator RefillStaminaBar()
+    {
+        while(currentStamina < maxStamina)
+        {
+            yield return new WaitForSecondsRealtime(5);
+            currentStamina += StaminaRefill;
+            stBar.SetStamina(currentStamina);
+        }
+    }
     //Testing Ends
     #endregion
+
+
 }
