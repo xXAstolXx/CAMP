@@ -5,9 +5,10 @@ using UnityEngine.EventSystems;
 
 public class ThirdPersonMovement : MonoBehaviour
 {
-
-    public Rigidbody rb;
-    public CharacterController controller;
+    [SerializeField]
+    private Rigidbody rb;
+    [SerializeField]
+    private CharacterController controller;
 
     public Transform cam;
 
@@ -15,10 +16,13 @@ public class ThirdPersonMovement : MonoBehaviour
     public KeyCode AtkKey = KeyCode.Q;
 
     [Header("=== Player utilities ===")]
-    public HealthBar healthBar;
-    public int maxHealth = 100;
+    [SerializeField]
+    private HealthBar healthBar;
+    [SerializeField]
+    private int maxHealth = 100;
     private int currentHealth;
-    public int maxDashes = 2;
+    [SerializeField] 
+    private int maxDashes = 2;
 
     [SerializeField]
     private int AtkDamage = 25;
@@ -28,28 +32,28 @@ public class ThirdPersonMovement : MonoBehaviour
 
     [Header("=== Player Movement Settings ===")]
     [SerializeField]
-    public float speed = 6f;
+    private float speed = 6f;
     [SerializeField]
-    public float turnSmoothTime = 0.1f;
+    private float turnSmoothTime = 0.1f;
     [SerializeField]
     float turnSmoothVelocity;
     [SerializeField]
-    public float gravity = -9.81f;
+    private const float gravity = -9.81f;
     [SerializeField]
-    public float jump = 1f;
+    private float jump = 1f;
     Vector3 JumpVector;
 
     [Header("Ground Check")]
     [SerializeField]
-    public Transform groundCheck;
+    private Transform groundCheck;
     [SerializeField]
-    public float groundDistance = 0.4f;
+    private float groundDistance = 0.4f;
     [SerializeField]
-    public LayerMask groundMask;
+    private LayerMask groundMask;
     [SerializeField]
     bool isGrounded;
     [SerializeField]
-    public float jumpCooldown;
+    private float jumpCooldown;
 
 
     enum PlayerState
