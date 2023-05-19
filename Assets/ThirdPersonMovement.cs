@@ -22,8 +22,6 @@ public class ThirdPersonMovement : MonoBehaviour
     [SerializeField]
     private int maxHealth = 100;
     private int currentHealth;
-    [SerializeField] 
-    private int maxDashes = 2;
 
     [SerializeField]
     private int AtkDamage = 25;
@@ -43,6 +41,12 @@ public class ThirdPersonMovement : MonoBehaviour
     [SerializeField]
     private float jump = 1f;
     Vector3 JumpVector;
+    [SerializeField]
+    private float jumpCooldown;
+    [SerializeField]
+    private float dashCooldown;
+    [SerializeField]
+    private float dashSpeed;
 
     
 
@@ -55,9 +59,7 @@ public class ThirdPersonMovement : MonoBehaviour
     private LayerMask groundMask;
     [SerializeField]
     bool isGrounded;
-    [SerializeField]
-    private float jumpCooldown;
-
+    private bool canDash = true;
 
     private void Start()
     {
@@ -71,7 +73,7 @@ public class ThirdPersonMovement : MonoBehaviour
     void Update()
     {
         
-        //PlayerMovement();
+        PlayerMovement();
         Attack();
         #region HealthBar
         //Testing Healthbar
@@ -118,6 +120,18 @@ public class ThirdPersonMovement : MonoBehaviour
             Invoke(nameof(ResetJump), jumpCooldown);
         }
 
+        if(Input.GetKeyDown(KeyCode.LeftControl) && canDash)
+        {
+            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+            Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+
+            Debug.Log("Dash was Pressed");
+            controller.Move(moveDir * dashSpeed * Time.deltaTime);
+            Invoke(nameof(ResetDash), dashCooldown);
+            canDash = false;
+
+        }
+
         if (isGrounded && JumpVector.y < 0)
         {
             JumpVector.y = gravity;
@@ -126,6 +140,11 @@ public class ThirdPersonMovement : MonoBehaviour
     private void ResetJump()
     {
         isGrounded = false;
+    }
+
+    private void ResetDash()
+    {
+        canDash = true;
     }
 
     void Attack()
