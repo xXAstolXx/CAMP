@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -43,6 +44,8 @@ public class ThirdPersonMovement : MonoBehaviour
     private float jump = 1f;
     Vector3 JumpVector;
 
+    
+
     [Header("Ground Check")]
     [SerializeField]
     private Transform groundCheck;
@@ -54,16 +57,6 @@ public class ThirdPersonMovement : MonoBehaviour
     bool isGrounded;
     [SerializeField]
     private float jumpCooldown;
-
-
-    enum PlayerState
-    {
-        IDLE = 0,
-        WALK,
-        DASH,
-        JUMP,
-        ATTACK = 10
-    }
 
 
     private void Start()
@@ -78,7 +71,7 @@ public class ThirdPersonMovement : MonoBehaviour
     void Update()
     {
         
-        PlayerMovement();
+        //PlayerMovement();
         Attack();
         #region HealthBar
         //Testing Healthbar
