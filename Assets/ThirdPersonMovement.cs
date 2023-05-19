@@ -1,68 +1,134 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class ThirdPersonMovement : MonoBehaviour
 {
+    [SerializeField]
+    private Rigidbody rb;
+    [SerializeField]
+    private CharacterController controller;
 
-   public Rigidbody rb;
-   public CharacterController controller;
+    public Transform cam;
 
-   public Transform cam;
+    [Header("=== Keybinds ===")]
+    public KeyCode AtkKey = KeyCode.Q;
+
+    [Header("=== Player utilities ===")]
+    [SerializeField]
+    private HealthBar healthBar;
+    [SerializeField]
+    private int maxHealth = 100;
+    private int currentHealth;
+    [SerializeField]
+    private StaminaBar stBar;
+    [SerializeField]
+    private int maxStamina = 100;
+    private int currentStamina;
+    [SerializeField]
+    private int StaminaRefill;
+
+    //Dash Ability
+    [SerializeField]
+    private float dashCooldown;
+    [SerializeField]
+    private int DashCost = 25;
+
+
+
+    [SerializeField]
+    private int AtkDamage = 25;
+    [SerializeField]
+    private float AtkSpeed = 1.5f;
+
+
     [Header("=== Player Movement Settings ===")]
     [SerializeField]
-    public float speed = 6f;
+    private float speed = 6f;
     [SerializeField]
-    public float turnSmoothTime = 0.1f;
+    private float turnSmoothTime = 0.1f;
     [SerializeField]
     float turnSmoothVelocity;
     [SerializeField]
-    public float gravity = -9.81f;
+    private const float gravity = -9.81f;
     [SerializeField]
-    public float jump = 1f;
+    private float jump = 1f;
     Vector3 JumpVector;
+    [SerializeField]
+    private float jumpCooldown;
+    [SerializeField]
+    private float dashSpeed;
+
+    
 
     [Header("Ground Check")]
     [SerializeField]
-    public Transform groundCheck;
+    private Transform groundCheck;
     [SerializeField]
-    public float groundDistance = 0.4f;
+    private float groundDistance = 0.4f;
     [SerializeField]
-    public LayerMask groundMask;
+    private LayerMask groundMask;
     [SerializeField]
     bool isGrounded;
-    [SerializeField]
-    public float jumpCooldown;
-
+    private bool canDash = true;
 
 
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        currentHealth = maxHealth;
+        healthBar.SetMaxHealth(maxHealth);
+        currentStamina = maxStamina;
+        stBar.SetMaxStamina(maxStamina);
     }
-    // Update is called once per frame
+
+    
     void Update()
     {
-        isGrounded = Physics.CheckSphere(groundCheck.position,groundDistance, groundMask);
-        if (isGrounded && JumpVector.y <0 )
+
+        PlayerMovement();
+        Attack();
+
+        #region HealthBar
+        //Testing Healthbar
+        if (Input.GetKeyDown(KeyCode.L)) 
         {
-            JumpVector.y = gravity;
+            TakeDamage(20);
         }
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            HealDamage(20);
+        }
+        //Testing Ends
+        #endregion
+    }
+
+
+    void PlayerMovement()
+    {
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
+        Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
 
-        Vector3 direction = new Vector3 (horizontal, 0f, vertical).normalized;
 
-        if (direction.magnitude >= 0.1f) 
-        { 
-            float targetAngle = Mathf.Atan2(direction.x , direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+
+
+        JumpVector.y += gravity * Time.deltaTime;
+        controller.Move(JumpVector * Time.deltaTime);
+
+        if (direction.magnitude >= 0.1f)
+        {
+            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            controller.Move (moveDir.normalized * speed * Time.deltaTime);
+            controller.Move(moveDir.normalized * speed * Time.deltaTime);
         }
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
@@ -70,11 +136,72 @@ public class ThirdPersonMovement : MonoBehaviour
             JumpVector.y = Mathf.Sqrt(jump * -2f * gravity);
             Invoke(nameof(ResetJump), jumpCooldown);
         }
-        JumpVector.y += gravity * Time.deltaTime;
-        controller.Move(JumpVector * Time.deltaTime);
+
+        if(Input.GetKeyDown(KeyCode.Mouse1) && canDash && currentStamina != 0)
+        {
+            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+            Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+
+             currentStamina -= DashCost;
+
+            Debug.Log("Current Stamina: " + currentStamina);
+            controller.Move(moveDir * dashSpeed * Time.deltaTime);
+            stBar.SetStamina(currentStamina);
+            Invoke(nameof(ResetDash), dashCooldown);
+            canDash = false;
+
+        }
+
+        if (isGrounded && JumpVector.y < 0)
+        {
+            JumpVector.y = gravity;
+        }
     }
     private void ResetJump()
     {
         isGrounded = false;
     }
+
+    private void ResetDash()
+    {
+        canDash = true;
+        StartCoroutine(RefillStaminaBar());
+    }
+
+    void Attack()
+    {
+       if(Input.GetKeyDown(AtkKey))
+       {
+            Debug.Log("AtkKey was Pressed");
+
+       }
+    }
+
+    #region Testing
+    //Testing Damage to Player
+    void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+        healthBar.SetHealth(currentHealth);
+    }
+
+    void HealDamage(int heal)
+    {
+        currentHealth += heal;
+        healthBar.SetHealth(currentHealth);
+    }
+
+   IEnumerator RefillStaminaBar()
+    {
+        while(currentStamina < maxStamina)
+        {
+            yield return new WaitForSecondsRealtime(5);
+            currentStamina += StaminaRefill;
+            stBar.SetStamina(currentStamina);
+        }
+    }
+    //Testing Ends
+    #endregion
+
+
 }
