@@ -16,12 +16,13 @@ public class ThirdPersonMovement : MonoBehaviour
     [Header("=== Keybinds ===")]
     public KeyCode AtkKey = KeyCode.Q;
 
-    [Header("=== Player utilities ===")]
+    [Header("=== Player Health ===")]
     [SerializeField]
     private HealthBar healthBar;
     [SerializeField]
     private int maxHealth = 100;
     private int currentHealth;
+    [Header("=== Player Stamina ===")]
     [SerializeField]
     private StaminaBar stBar;
     [SerializeField]
@@ -30,14 +31,14 @@ public class ThirdPersonMovement : MonoBehaviour
     [SerializeField]
     private int StaminaRefill;
 
-    //Dash Ability
+    [Header("=== Dash ===")]
     [SerializeField]
     private float dashCooldown;
     [SerializeField]
     private int DashCost = 25;
 
 
-
+    [Header("=== Player Atttack ===")]
     [SerializeField]
     private int AtkDamage = 25;
     [SerializeField]
