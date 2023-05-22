@@ -17,9 +17,8 @@ public class StaminaBar : MonoBehaviour
 
         fill.color = StaminaGradient.Evaluate(1f);
     }
-    public void SetStamina(float stamina)
+    public void SetStamina(int stamina)
     {
-        StaminaSlider.value = Mathf.Clamp(stamina, 0f, 100f);
         StaminaSlider.value = stamina;
 
 

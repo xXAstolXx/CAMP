@@ -104,6 +104,11 @@ public class ThirdPersonMovement : MonoBehaviour
         {
             HealDamage(30);
         }
+        //Stamina Bar
+        if(currentStamina < 0) 
+        { 
+            currentStamina = 0;
+        }
         //Testing Ends
         #endregion
 
@@ -140,7 +145,7 @@ public class ThirdPersonMovement : MonoBehaviour
             Invoke(nameof(ResetJump), jumpCooldown);
         }
 
-        if(Input.GetKeyDown(KeyCode.Mouse1) && canDash && currentStamina != 0)
+        if(Input.GetKeyDown(KeyCode.Mouse1) && canDash && currentStamina >= DashCost)
         {
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
@@ -149,6 +154,7 @@ public class ThirdPersonMovement : MonoBehaviour
 
             Debug.Log("Current Stamina: " + currentStamina);
             controller.Move(moveDir * dashSpeed * Time.deltaTime);
+            currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
             stBar.SetStamina(currentStamina);
             Invoke(nameof(ResetDash), dashCooldown);
             canDash = false;
@@ -204,6 +210,7 @@ public class ThirdPersonMovement : MonoBehaviour
         if(isGrounded)
         {
             currentStamina += refill;
+            currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
             stBar.SetStamina(currentStamina);
         }
     }
