@@ -95,16 +95,6 @@ public class ThirdPersonMovement : MonoBehaviour
         Attack();
         #region HealthBar
         //Testing Healthbar
-        #region HealthBar Clamp
-        if (currentHealth < 0)
-        {
-            currentHealth = 0;
-        }
-        if(currentHealth > maxHealth)
-        { 
-            currentHealth = maxHealth; 
-        }
-        #endregion
         if (Input.GetKeyDown(KeyCode.L)) 
         {
             TakeDamage(25);
@@ -195,13 +185,17 @@ public class ThirdPersonMovement : MonoBehaviour
     void TakeDamage(int damage)
     {
         currentHealth -= damage;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
         healthBar.SetHealth(currentHealth);
+        Debug.Log("Health: " + currentHealth);
     }
 
     void HealDamage(int heal)
     {
         currentHealth += heal;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
         healthBar.SetHealth(currentHealth);
+        Debug.Log("Health: " +  currentHealth);
         
     }
 
