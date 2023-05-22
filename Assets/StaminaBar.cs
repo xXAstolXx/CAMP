@@ -19,8 +19,11 @@ public class StaminaBar : MonoBehaviour
     }
     public void SetStamina(float stamina)
     {
+        StaminaSlider.value = Mathf.Clamp(stamina, 0f, 100f);
         StaminaSlider.value = stamina;
 
+
         fill.color = StaminaGradient.Evaluate(StaminaSlider.normalizedValue);
+
     }
 }

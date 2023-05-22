@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -73,7 +74,7 @@ public class ThirdPersonMovement : MonoBehaviour
     private LayerMask groundMask;
     [SerializeField]
     bool isGrounded;
-    private bool canDash = true;
+    private bool canDash;
 
 
     private void Start()
@@ -92,20 +93,30 @@ public class ThirdPersonMovement : MonoBehaviour
 
         PlayerMovement();
         Attack();
-
         #region HealthBar
         //Testing Healthbar
+        #region HealthBar Clamp
+        if (currentHealth < 0)
+        {
+            currentHealth = 0;
+        }
+        if(currentHealth > maxHealth)
+        { 
+            currentHealth = maxHealth; 
+        }
+        #endregion
         if (Input.GetKeyDown(KeyCode.L)) 
         {
-            TakeDamage(20);
+            TakeDamage(25);
         }
 
         if (Input.GetKeyDown(KeyCode.K))
         {
-            HealDamage(20);
+            HealDamage(30);
         }
         //Testing Ends
         #endregion
+
     }
 
 
@@ -118,6 +129,7 @@ public class ThirdPersonMovement : MonoBehaviour
 
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
+        canDash = true;
 
         JumpVector.y += gravity * Time.deltaTime;
         controller.Move(JumpVector * Time.deltaTime);
@@ -165,8 +177,8 @@ public class ThirdPersonMovement : MonoBehaviour
 
     private void ResetDash()
     {
-        canDash = true;
-        StartCoroutine(RefillStaminaBar());
+        canDash = false;
+        RefillStaminaBar(StaminaRefill);
     }
 
     void Attack()
@@ -190,17 +202,18 @@ public class ThirdPersonMovement : MonoBehaviour
     {
         currentHealth += heal;
         healthBar.SetHealth(currentHealth);
+        
     }
 
-   IEnumerator RefillStaminaBar()
+   private void RefillStaminaBar(int refill)
     {
-        while(currentStamina < maxStamina)
+        if(isGrounded)
         {
-            yield return new WaitForSecondsRealtime(5);
-            currentStamina += StaminaRefill;
+            currentStamina += refill;
             stBar.SetStamina(currentStamina);
         }
     }
+
     //Testing Ends
     #endregion
 
